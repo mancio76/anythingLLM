@@ -1,6 +1,0 @@
-0000000000000000000000000000000000000000 626ff846187124ec441a73a7cccb0e57de9c0227 mancio76 <mancio76@gmail.com> 1758237780 +0200	clone: from https://github.com/oe-openeconomics/anythingllm-utils.git
-626ff846187124ec441a73a7cccb0e57de9c0227 626ff846187124ec441a73a7cccb0e57de9c0227 mancio76 <mancio76@gmail.com> 1758238218 +0200	checkout: moving from main to cli+api
-626ff846187124ec441a73a7cccb0e57de9c0227 be0a2b97047acbcb11a8eeddc2e55492191f289c mancio76 <mancio76@gmail.com> 1758238222 +0200	commit: new file: .vscode/settings.json
-be0a2b97047acbcb11a8eeddc2e55492191f289c be0a2b97047acbcb11a8eeddc2e55492191f289c mancio76 <mancio76@gmail.com> 1758265518 +0200	checkout: moving from cli+api to cli+api
-be0a2b97047acbcb11a8eeddc2e55492191f289c 3c9f5231151e8e993afb40ab7070dc6ba331ca17 mancio76 <mancio76@gmail.com> 1758265564 +0200	commit: new file: .kiro/specs/anythingllm-api-refactor/design.md
-3c9f5231151e8e993afb40ab7070dc6ba331ca17 3c9f5231151e8e993afb40ab7070dc6ba331ca17 mancio76 <mancio76@gmail.com> 1758265896 +0200	checkout: moving from cli+api to cli+api
