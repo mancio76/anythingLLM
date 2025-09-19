@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:password@db:5432/anythingllm_api
+      - REDIS_ENABLED=true
+      - REDIS_URL=redis://redis:6379/0
+      - ANYTHINGLLM_URL=http://anythingllm:3001
+      - ANYTHINGLLM_API_KEY=your_api_key_here
+      - SECRET_KEY=your-super-secret-key-for-development
+      - LOG_LEVEL=DEBUG
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./storage:/tmp/anythingllm-api
+    networks:
+      - anythingllm-network
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=anythingllm_api
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - anythingllm-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - anythingllm-network
+
+  # Placeholder for AnythingLLM service
+  # anythingllm:
+  #   image: anythingllm/anythingllm:latest
+  #   ports:
+  #     - "3001:3001"
+  #   environment:
+  #     - JWT_SECRET=your-jwt-secret
+  #   volumes:
+  #     - anythingllm_data:/app/server/storage
+  #   networks:
+  #     - anythingllm-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  # anythingllm_data:
+
+networks:
+  anythingllm-network:
+    driver: bridge

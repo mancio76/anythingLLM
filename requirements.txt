@@ -1,0 +1,15 @@
+requests>=2.31.0
+tqdm>=4.66.1
+pandas>=2.1.0
+openpyxl>=3.1.2
+tabulate>=0.9.0
+pyyaml>=6.0.1
+python-docx>=1.1.0
+pypandoc>=1.11
+beautifulsoup4>=4.12.2
+ocrmypdf>=14.0.0
+Pillow>=10.2.0
+PyMuPDF>=1.23.1
+python-magic>=0.4.27
+extract-msg>=0.45.0
+certifi>=2023.11.17

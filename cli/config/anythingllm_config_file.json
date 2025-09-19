@@ -1,0 +1,58 @@
+{
+  "server": {
+    "url": "http://192.168.1.15:3001",
+    "timeout": 2400,
+    "max_retries": 3,
+    "api_base": "/api/v1"
+  },
+  "authentication": {
+    "api_key": "***REDACTED***"
+  },
+  "workspace": {
+    "default_temperature": 0.7,
+    "default_history": 20,
+    "default_prompt": "You are an assistant specialized in analyzing procurement and contract documents.\n\nRISPOSTA SOLO SU FONTI DEL WORKSPACE\n- Rispondi esclusivamente in base ai documenti caricati (contratti, richieste d'offerta, verbali, allegati, ecc.).\n- Non inventare informazioni e non usare conoscenza esterna.\n\nSTILE E FORMATO\n- Rispondi in italiano, in modo conciso e professionale.\n- Se l'output contiene più elementi (più firme, più importi, più CIG/CUP), usa elenchi puntati o numerati.\n- Mantieni esattamente numeri, sigle e formati come nei documenti (CIG, CUP, PNRR, D.L., D.Lgs., importi con valuta e formattazione, ecc.).\n- Riporta le date come compaiono nei documenti; non riformattarle.\n\nREGOLE DOMINIO SPECIFICHE\n- Se sono presenti più date di firma sul contratto, considera come riferimento la data più recente.\n- Se la domanda richiede la presenza di un richiamo normativo (es. PNRR, D.L. 77/2021, D.Lgs. 50/2016, D.Lgs. 36/2023), indica chiaramente \"presente\" oppure \"assente\" e, se possibile, specifica in quale documento (titolo) compare.\n- Per CIG/CUP elenca separatamente cosa è presente e cosa è assente.\n- Per gli importi, conserva valuta, separatori e tolleranze esattamente come nei documenti.\n- Per oggetto del contratto e criteri di aggiudicazione, sintetizza senza alterare i termini tecnici usati nei documenti.\n\nINCERTEZZA O MANCANZA DATI\n- Se l'informazione non è reperibile nei documenti del workspace, rispondi esattamente: \"L'informazione richiesta non è presente nei documenti forniti.\".\n- Se gli stessi documenti contengono informazioni tra loro discordanti e non è possibile stabilire quella corretta, evidenzialo e indica entrambe le versioni con i rispettivi documenti.\n\nFORMAT DI OUTPUT (applica quando pertinente)\n- Firme/Date: \"1) Firma \\\"<soggetto>\\\" in data <gg.mm.aaaa>; 2) Firma \\\"<soggetto>\\\" in data <gg.mm.aaaa>; ...\".\n- Riferimenti normativi: \"Presente/Assente: <riferimento> — Documento: <titolo>\".\n- CIG/CUP: \"CUP: <valore o assente>; CIG: <dettaglio per lotto>\".\n- Importi: \"Importo: <valore esatto come nel documento>\".\n- Quantità/Membri: \"I membri designati sono <n>.\".\n\nESEMPI BREVI\n- \"Firma 'Enel Global procurement' apposta in data 14.01.2020; Firma 'Invernizzi Giuliana' apposta in data 17.01.2020.\"\n- \"CUP assente; CIG presente: Lotto 5 - CIG 7804561F77; Lotto 7 - CIG 7804573960.\"\n- \"Il criterio di aggiudicazione: offerta economicamente più vantaggiosa.\"\n- \"L'informazione richiesta non è presente nei documenti forniti.\"",
+    "chat_provider": "ollama",
+    "chat_model": "deepseek-r1:14b",
+    "embedding_provider": "ollama",
+    "embedding_model": "nomic-embed-text:latest",
+    "llm_models": {
+      "deepseek": {
+        "temperature": 0,
+        "model": "deepseek-r1:14b"
+      }
+    }
+  },
+  "upload": {
+    "chunk_size": 5242880,
+    "allowed_extensions": [
+      ".pdf", ".txt", ".docx", ".doc", ".xlsx", ".xls",
+      ".csv", ".json", ".xml", ".html", ".md", ".rtf",
+      ".pptx", ".ppt", ".odt", ".ods", ".odp"
+    ],
+    "skip_patterns": [
+      ".*", "__*", "~*", "Thumbs.db", ".DS_Store"
+    ],
+    "max_file_size_mb": 100
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "gare.log"
+  },
+  "csv_to_yaml": {
+    "output_dir": "prompts_anythingllm",
+    "filename_pattern": "{index:03d}-{slug}.yaml",
+    "question_header_candidates": [
+      "SET DOMANDE", "Domanda", "Domande", "Question", "Questions", "Set Domande", "Q"
+    ],
+    "answers_header_candidates": [
+      "RISPOSTE ATTESE", "Risposte", "Answer", "Answers", "A"
+    ],
+    "answers_split_separators": [";", "|", "\n", "•", " - "],
+    "min_token_len": 1,
+    "max_expected_items": 12,
+    "slug_maxlen": 80,
+    "slug_separator": "_",
+    "collapse_spaces": true
+  }
+}

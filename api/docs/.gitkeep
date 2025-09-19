@@ -1,0 +1,32 @@
+# Documentation Directory
+
+This directory contains all documentation files for the AnythingLLM API project.
+
+## Important Note for Future Development:
+
+**Always place documentation files (*.md) in the `/api/docs/` directory, except for the main README.md which stays in the root `/api/` directory.**
+
+This keeps the project root clean and organizes all documentation in one place.
+
+## Current Structure:
+
+- README.md (main project documentation - stays in /api/)
+- docs/README.md (documentation index)
+- docs/INSTALL.md (installation guide)
+- docs/DEVELOPMENT.md (development guide)
+- docs/TESTING.md (testing guide)
+- docs/DEPLOYMENT.md (deployment guide)
+- docs/API.md (API documentation)
+
+## Future Documentation:
+
+When adding new documentation, place it in this directory and update:
+
+1. docs/README.md (add to the index)
+2. README.md (add link if it's a major document)
+3. validate_structure.py (add to required_files if critical)
+
+## Testing Documentation:
+
+- docs/TESTING.md contains comprehensive testing guide
+- All test files should be placed in /api/tests/ directory

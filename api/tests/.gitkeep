@@ -1,0 +1,100 @@
+# Tests Directory
+
+This directory contains all test files for the AnythingLLM API project.
+
+## Important Note for Future Development
+
+**Always place test files (test_*.py) in the `/api/tests/` directory.**
+
+This keeps tests organized and separate from the main application code.
+
+## Current Test Structure
+
+```treemap
+- tests/__init__.py (test package initialization)
+- tests/conftest.py (pytest configuration and shared fixtures)
+- tests/test_requirements.py (dependency import tests)
+- tests/test_health.py (health endpoint tests)
+- tests/test_config.py (configuration tests)
+- tests/test_logging.py (logging functionality tests)
+```
+
+## Test Organization
+
+### Test File Naming
+
+- `test_*.py` - Test files should start with "test_"
+- `*_test.py` - Alternative naming (also supported)
+
+### Test Structure
+
+```treemap
+tests/
+├── __init__.py              # Package initialization
+├── conftest.py              # Shared fixtures and configuration
+├── test_*.py                # Individual test modules
+├── unit/                    # Unit tests (future)
+├── integration/             # Integration tests (future)
+└── fixtures/                # Test data and fixtures (future)
+```
+
+## Running Tests
+
+### All tests
+
+```bash
+pytest
+```
+
+### Specific test file
+
+```bash
+pytest tests/test_health.py
+```
+
+### With coverage
+
+```bash
+pytest --cov=app --cov-report=html
+```
+
+### Async tests
+
+```bash
+pytest -m asyncio
+```
+
+## Test Categories
+
+### Current Tests
+
+- **Unit Tests**: test_config.py, test_logging.py
+- **Integration Tests**: test_health.py
+- **Dependency Tests**: test_requirements.py
+
+### Future Test Categories
+
+- **API Tests**: Testing API endpoints
+- **Database Tests**: Testing database operations
+- **Service Tests**: Testing business logic
+- **Security Tests**: Testing authentication and authorization
+- **Performance Tests**: Load and stress testing
+
+## Test Fixtures
+
+Common fixtures are defined in `conftest.py`:
+
+- `app`: FastAPI application instance
+- `client`: Synchronous test client
+- `async_client`: Asynchronous test client
+- `settings`: Application settings
+- `mock_env_vars`: Mock environment variables
+
+## Best Practices
+
+1. **Isolation**: Each test should be independent
+2. **Naming**: Use descriptive test names
+3. **Fixtures**: Use fixtures for common setup
+4. **Mocking**: Mock external dependencies
+5. **Coverage**: Aim for high test coverage
+6. **Documentation**: Document complex test scenarios
