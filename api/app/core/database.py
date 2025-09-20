@@ -123,6 +123,20 @@ class DatabaseManager:
             finally:
                 await session.close()
     
+    @asynccontextmanager
+    async def get_transaction(self):
+        """Get database transaction context manager."""
+        if not self.session_factory:
+            raise RuntimeError("Database not initialized")
+        
+        async with self.session_factory() as session:
+            async with session.begin():
+                try:
+                    yield session
+                except Exception:
+                    # Transaction will be automatically rolled back
+                    raise
+    
     def get_redis(self) -> Optional[redis.Redis]:
         """Get Redis client."""
         return self.redis_client
@@ -145,6 +159,12 @@ async def close_db() -> None:
 async def get_db_session():
     """Dependency to get database session."""
     async with db_manager.get_session() as session:
+        yield session
+
+
+async def get_db_transaction():
+    """Dependency to get database transaction."""
+    async with db_manager.get_transaction() as session:
         yield session
 
 

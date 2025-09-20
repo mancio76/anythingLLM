@@ -14,13 +14,13 @@ redis[hiredis]==5.0.1
 httpx==0.25.2
 
 # Configuration and validation
-pydantic[email]==2.5.0
-pydantic-settings==2.1.0
+pydantic[email]==2.11.9
+pydantic-settings==2.10.1
 
 # Security
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
-python-multipart==0.0.6
+python-multipart==0.0.20
 
 # File processing
 aiofiles==23.2.1
@@ -31,6 +31,7 @@ aioboto3==12.3.0
 
 # Monitoring and metrics
 prometheus-client==0.19.0
+psutil==5.9.6
 
 # Environment configuration
 python-dotenv==1.0.0

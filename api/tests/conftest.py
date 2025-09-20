@@ -1,10 +1,21 @@
 """Pytest configuration and shared fixtures."""
 
 import asyncio
+import os
 import pytest
 from typing import AsyncGenerator, Generator
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
+
+# Set test environment variables before importing app
+os.environ.update({
+    "DATABASE_URL": "postgresql+asyncpg://test:test@localhost:5432/test_db",
+    "ANYTHINGLLM_URL": "http://localhost:3001",
+    "ANYTHINGLLM_API_KEY": "test-api-key",
+    "SECRET_KEY": "test-secret-key-for-testing-only",
+    "REDIS_ENABLED": "false",
+    "LOG_LEVEL": "DEBUG",
+})
 
 from app.main import create_app
 from app.core.config import get_settings
@@ -59,3 +70,15 @@ def mock_env_vars(monkeypatch):
         monkeypatch.setenv(key, value)
     
     return test_env
+
+
+@pytest.fixture
+def mock_auth_user():
+    """Mock authenticated user for testing."""
+    from app.core.security import User
+    return User(
+        id="test_user_123",
+        username="testuser",
+        is_active=True,
+        roles=["user"]
+    )

@@ -7,9 +7,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import get_settings
 from app.core.database import init_db, close_db
 from app.core.logging import setup_logging
-from app.middleware.logging import LoggingMiddleware
-from app.middleware.security import SecurityHeadersMiddleware
-from app.routers import health
+from app.core.metrics import get_metrics_collector
+from app.middleware import (
+    AuthenticationMiddleware,
+    GlobalExceptionHandler,
+    LoggingMiddleware,
+    MetricsMiddleware,
+    RateLimitingMiddleware,
+    SecurityHeadersMiddleware,
+)
+from app.routers import auth, documents, health, questions, workspaces
 
 
 @asynccontextmanager
@@ -22,6 +29,13 @@ async def lifespan(app: FastAPI):
     
     # Initialize database
     await init_db(settings)
+    
+    # Initialize metrics
+    metrics = get_metrics_collector()
+    metrics.set_app_info(
+        version=settings.api_version,
+        environment="production"  # Could be made configurable
+    )
     
     yield
     
@@ -40,7 +54,7 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
     
-    # Add middleware
+    # Add middleware (order matters - last added is executed first)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,
@@ -49,9 +63,21 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
     app.add_middleware(SecurityHeadersMiddleware)
+    app.add_middleware(GlobalExceptionHandler)  # Error handling should be early in the stack
     app.add_middleware(LoggingMiddleware)
+    app.add_middleware(MetricsMiddleware)
+    app.add_middleware(
+        RateLimitingMiddleware,
+        requests_per_window=settings.rate_limit_requests,
+        window_seconds=settings.rate_limit_window,
+    )
+    app.add_middleware(AuthenticationMiddleware)
     
     # Include routers
+    app.include_router(auth.router, prefix=settings.api_prefix)
+    app.include_router(documents.router, prefix=settings.api_prefix)
+    app.include_router(questions.router, prefix=settings.api_prefix)
+    app.include_router(workspaces.router, prefix=settings.api_prefix)
     app.include_router(health.router, prefix=settings.api_prefix)
     
     return app
