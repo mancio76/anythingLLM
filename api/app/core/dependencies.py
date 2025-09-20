@@ -1,12 +1,22 @@
-"""FastAPI dependencies for authentication and authorization."""
+"""FastAPI dependencies for authentication, authorization, and service injection."""
 
 from typing import Optional
 
 from fastapi import Depends, Request, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from sqlalchemy.ext.asyncio import AsyncSession
+import redis.asyncio as redis
 
 from app.core.security import User, get_jwt_handler, get_api_key_handler
 from app.core.config import get_settings
+from app.core.container import get_container
+from app.core.database import get_db_session, get_redis
+from app.repositories.job_repository import JobRepository
+from app.repositories.cache_repository import CacheRepository
+from app.services.document_service import DocumentService
+from app.services.job_service import JobService
+from app.services.question_service import QuestionService
+from app.services.workspace_service import WorkspaceService
 
 
 # Security schemes
@@ -143,6 +153,61 @@ async def authenticate_with_api_key(request: Request) -> Optional[User]:
     user = api_key_handler.verify_api_key(api_key)
     
     return user if user and user.is_active else None
+
+
+# Repository Dependencies
+
+async def get_job_repository(
+    session: AsyncSession = Depends(get_db_session)
+) -> JobRepository:
+    """Get job repository dependency."""
+    container = get_container()
+    return container.get_job_repository(session)
+
+
+async def get_cache_repository(
+    redis_client: Optional[redis.Redis] = Depends(get_redis)
+) -> CacheRepository:
+    """Get cache repository dependency."""
+    container = get_container()
+    return container.get_cache_repository(redis_client)
+
+
+# Service Dependencies
+
+async def get_document_service(
+    job_repository: JobRepository = Depends(get_job_repository)
+) -> DocumentService:
+    """Get document service dependency."""
+    container = get_container()
+    return container.get_document_service(job_repository)
+
+
+async def get_job_service(
+    job_repository: JobRepository = Depends(get_job_repository),
+    cache_repository: CacheRepository = Depends(get_cache_repository)
+) -> JobService:
+    """Get job service dependency."""
+    container = get_container()
+    return container.get_job_service(job_repository, cache_repository)
+
+
+async def get_workspace_service(
+    job_repository: JobRepository = Depends(get_job_repository),
+    cache_repository: CacheRepository = Depends(get_cache_repository)
+) -> WorkspaceService:
+    """Get workspace service dependency."""
+    container = get_container()
+    return container.get_workspace_service(job_repository, cache_repository)
+
+
+async def get_question_service(
+    job_repository: JobRepository = Depends(get_job_repository),
+    cache_repository: CacheRepository = Depends(get_cache_repository)
+) -> QuestionService:
+    """Get question service dependency."""
+    container = get_container()
+    return container.get_question_service(job_repository, cache_repository)
 
 
 # Admin role dependency

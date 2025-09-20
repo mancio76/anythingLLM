@@ -15,7 +15,12 @@ from fastapi import (
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from app.core.config import get_settings
-from app.core.dependencies import get_current_active_user, require_user
+from app.core.dependencies import (
+    get_current_active_user, 
+    require_user,
+    get_question_service,
+    get_job_service
+)
 from app.core.security import User
 from app.models.pydantic_models import (
     ErrorResponse,
@@ -37,23 +42,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/questions", tags=["questions"])
 
 
-# Dependency injection placeholders - these will be properly implemented in task 17
-async def get_question_service() -> QuestionService:
-    """Get question service instance."""
-    # TODO: Implement proper dependency injection in task 17
-    raise HTTPException(
-        status_code=501,
-        detail="Question service dependency injection not yet implemented"
-    )
-
-
-async def get_job_service() -> JobService:
-    """Get job service instance."""
-    # TODO: Implement proper dependency injection in task 17
-    raise HTTPException(
-        status_code=501,
-        detail="Job service dependency injection not yet implemented"
-    )
+# Dependencies are now imported from app.core.dependencies
 
 
 @router.post(

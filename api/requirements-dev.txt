@@ -6,6 +6,9 @@ pytest==8.4.2
 pytest-asyncio==1.2.0
 pytest-mock==3.12.0
 pytest-cov==4.1.0
+pytest-xdist==3.3.1  # For parallel test execution
+httpx==0.25.2  # For async HTTP client testing
+psutil==5.9.6  # For performance monitoring in tests
 
 # Code quality and formatting
 black==23.11.0

@@ -61,6 +61,18 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
             "/api/v1/auth/login",
             "/api/v1/auth/test-api-key",
             "/api/v1/auth/status",
+            "/api/v1/docs",
+            "/api/v1/docs/versions",
+            "/api/v1/docs/examples",
+            "/api/v1/docs/authentication",
+            "/api/v1/docs/errors",
+            "/api/v1/docs/rate-limits",
+            "/api/v1/docs/webhooks",
+            "/api/v1/docs/sdk",
+            "/api/v1/docs/changelog",
+            "/api/v1/docs/status",
+            "/api/v1/openapi.json",
+            "/api/v1/redoc",
         }
     
     async def dispatch(self, request: Request, call_next: Callable) -> Response:

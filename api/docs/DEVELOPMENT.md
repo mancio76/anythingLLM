@@ -3,6 +3,7 @@
 ## Development Setup
 
 ### Prerequisites
+
 - Python 3.9+
 - PostgreSQL database
 - Redis (optional)
@@ -11,31 +12,36 @@
 ### Setup Development Environment
 
 1. **Clone and setup:**
-```bash
-cd api
-python -m venv venv
-venv\Scripts\activate  # Windows
-# source venv/bin/activate  # macOS/Linux
-```
+
+    ```bash
+    cd api
+    python -m venv venv
+    venv\Scripts\activate  # Windows
+    # source venv/bin/activate  # macOS/Linux
+    ```
 
 2. **Install development dependencies:**
-```bash
-pip install -r requirements-dev.txt
-```
+
+    ```bash
+    pip install -r requirements-dev.txt
+    ```
 
 3. **Setup pre-commit hooks:**
-```bash
-pre-commit install
-```
+
+    ```bash
+    pre-commit install
+    ```
 
 ### Running in Development Mode
 
 **With auto-reload:**
+
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 **With environment variables:**
+
 ```bash
 # Copy and edit environment file
 cp .env.example .env
@@ -47,6 +53,7 @@ python run.py
 ## Code Quality
 
 ### Formatting and Linting
+
 ```bash
 # Format code
 black app/
@@ -58,6 +65,7 @@ mypy app/
 ```
 
 ### Testing
+
 ```bash
 # Run all tests
 pytest
@@ -76,7 +84,7 @@ See [TESTING.md](TESTING.md) for comprehensive testing documentation.
 
 ## Project Structure
 
-```
+```treemap
 api/
 ├── app/                    # Main application package
 │   ├── core/              # Core functionality
@@ -98,37 +106,42 @@ api/
 ## Development Workflow
 
 1. **Create feature branch:**
-```bash
-git checkout -b feature/your-feature-name
-```
+
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
 
 2. **Make changes and test:**
-```bash
-# Run tests
-pytest
 
-# Check code quality
-black app/ && isort app/ && flake8 app/ && mypy app/
-```
+    ```bash
+    # Run tests
+    pytest
+
+    # Check code quality
+    black app/ && isort app/ && flake8 app/ && mypy app/
+    ```
 
 3. **Commit and push:**
-```bash
-git add .
-git commit -m "feat: your feature description"
-git push origin feature/your-feature-name
-```
+
+    ```bash
+    git add .
+    git commit -m "feat: your feature description"
+    git push origin feature/your-feature-name
+    ```
 
 ## Environment Variables
 
 See `.env.example` for all available configuration options.
 
-### Required for Development:
+### Required for Development
+
 - `DATABASE_URL`: PostgreSQL connection
 - `ANYTHINGLLM_URL`: AnythingLLM instance URL
 - `ANYTHINGLLM_API_KEY`: API key for AnythingLLM
 - `SECRET_KEY`: JWT signing key
 
-### Optional for Development:
+### Optional for Development
+
 - `REDIS_ENABLED=false`: Disable Redis for local dev
 - `LOG_LEVEL=DEBUG`: More verbose logging
 - `LOG_FORMAT=text`: Human-readable logs
@@ -136,7 +149,9 @@ See `.env.example` for all available configuration options.
 ## Debugging
 
 ### VS Code Configuration
+
 Create `.vscode/launch.json`:
+
 ```json
 {
     "version": "0.2.0",
@@ -156,6 +171,7 @@ Create `.vscode/launch.json`:
 ```
 
 ### Common Debug Commands
+
 ```bash
 # Check configuration loading
 python -c "from app.core.config import get_settings; print(get_settings())"

@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: anythingllm-api-metrics
+  namespace: anythingllm
+  labels:
+    app: anythingllm-api
+    component: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: anythingllm-api
+  endpoints:
+  - port: http
+    path: /api/v1/metrics
+    interval: 30s
+    scrapeTimeout: 10s
+    honorLabels: true
+  namespaceSelector:
+    matchNames:
+    - anythingllm

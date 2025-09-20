@@ -14,7 +14,11 @@ from fastapi import (
 from fastapi.responses import JSONResponse
 
 from app.core.config import get_settings, Settings
-from app.core.dependencies import get_current_active_user, require_user
+from app.core.dependencies import (
+    get_current_active_user, 
+    require_user,
+    get_workspace_service
+)
 from app.core.security import User
 from app.core.database import get_db_session
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -44,41 +48,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/workspaces", tags=["workspaces"])
 
 
-# Dependency injection
-async def get_workspace_service(
-    db_session: AsyncSession = Depends(get_db_session),
-    settings: Settings = Depends(get_settings)
-) -> WorkspaceService:
-    """Get workspace service instance."""
-    from app.integrations.anythingllm_client import AnythingLLMClient
-    from app.repositories.job_repository import JobRepository
-    from app.repositories.cache_repository import CacheRepository
-    from app.core.database import get_redis
-    from sqlalchemy.ext.asyncio import AsyncSession
-    
-    # Create AnythingLLM client
-    anythingllm_client = AnythingLLMClient(
-        base_url=settings.anythingllm_url,
-        api_key=settings.anythingllm_api_key,
-        timeout=settings.anythingllm_timeout
-    )
-    
-    # Create repositories
-    job_repository = JobRepository(db_session)
-    
-    # Create cache repository if Redis is enabled
-    cache_repository = None
-    redis_client = get_redis()
-    if redis_client:
-        cache_repository = CacheRepository(redis_client)
-    
-    # Create and return workspace service
-    return WorkspaceService(
-        settings=settings,
-        anythingllm_client=anythingllm_client,
-        job_repository=job_repository,
-        cache_repository=cache_repository
-    )
+# Dependencies are now imported from app.core.dependencies
 
 
 @router.post(
